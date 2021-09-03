@@ -1,0 +1,16 @@
+PODS:
+  - Raft (0.4.16)
+
+DEPENDENCIES:
+  - Raft
+
+SPEC REPOS:
+  https://gitlabci.raiffeisen.ru/mobile_development/ios-kit/ios-podspecs:
+    - Raft
+
+SPEC CHECKSUMS:
+  Raft: a2e78f4d84b14d58c840ecba813f8e91d98cde98
+
+PODFILE CHECKSUM: a251f17ffc40891bbf407faa1ddbfcd1227bb53c
+
+COCOAPODS: 1.10.1

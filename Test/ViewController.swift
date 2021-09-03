@@ -8,6 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate {
+    private let logoService = LogoService()
     let loginField = LoginTextField()
     let passwordField = PasswordTextField()
     let enterButton = UIButton()
@@ -36,10 +37,10 @@ class ViewController: UIViewController, UITableViewDelegate {
         view.addSubview(contentView)
         
         NSLayoutConstraint.activate([
-            contentView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            contentView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-            contentView.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -30),
-            contentView.heightAnchor.constraint(equalTo: self.view.heightAnchor, constant: -40)
+            contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            contentView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            contentView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -30),
+            contentView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -40)
         ])
         
         let logoContainer = UIView()
@@ -136,6 +137,8 @@ class ViewController: UIViewController, UITableViewDelegate {
         bottomLabel.textColor = .black
         bottomLabel.text = "© 2003-2021 АО «Райффайзенбанк», t-shape_ruacmg"
         contentView.addArrangedSubview(bottomLabel)
+
+        fetchLogo(logoView: logo)
     }
 
     @objc func onClickForgotPassword(sender: UIButton) {
@@ -171,7 +174,22 @@ class ViewController: UIViewController, UITableViewDelegate {
     func showAlert(title: String, message: String, buttonTitle: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: buttonTitle, style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
+    }
+
+    func fetchLogo(logoView: UIView) {
+        logoService.fetch(callback: { result in
+            switch result {
+                case .failure(let err):
+                    NSLog("RESPONSE: " + err.localizedDescription)
+                    logoView.backgroundColor = .red
+                case .success(let resp):
+                    print(resp)
+                    NSLog("RESPONSE: \(type(of: resp))")
+                    NSLog("RESPONSE: \(resp)")
+                    logoView.backgroundColor = .blue
+                }
+        } )
     }
 }
 
@@ -179,8 +197,7 @@ class ShadowedView: UIView {
     private var shadowLayer: CAShapeLayer!
     private var cornerRadius: CGFloat = 25.0
     private var fillColor: UIColor = .white
-    
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
